@@ -51,6 +51,9 @@ class User extends Authenticatable implements MustVerifyEmail
         $user->sendEmailVerificationNotification();
         return $user->createToken('MyApp')->accessToken;
     }
+    public function charges(){
+        return $this->hasMany(Charge::class);
+    }
 
 
 }

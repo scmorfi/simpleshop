@@ -8,8 +8,9 @@ use Laravel\Passport\ClientRepository;
  * A trait to handle authorization based on users permissions for given controller
  */
 
-trait SetPassportTest
+trait PassportTest
 {
+
     public function setPassportTest(){
         $clientRepository = new ClientRepository();
         $client = $clientRepository->createPersonalAccessClient(
@@ -22,4 +23,6 @@ trait SetPassportTest
             'updated_at' => new DateTime,
         ]);
     }
+
+
 }

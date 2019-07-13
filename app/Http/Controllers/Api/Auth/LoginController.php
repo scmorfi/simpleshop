@@ -98,7 +98,8 @@ class LoginController extends Controller
     protected function sendLoginResponse(Request $request, $token)
     {
         $this->clearLoginAttempts($request);
-        return response()->json(['token' => Auth::user()->createToken('MyApp')-> accessToken], $this-> successStatus);
+
+        return response()->json(['token' => Auth::user()->createToken('MyApp')-> accessToken], 200);
     }
 
 

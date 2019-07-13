@@ -5,12 +5,12 @@ namespace Tests\Feature;
 
 use App\User;
 use Tests\TestCase;
-use App\SetPassportTest;
+use App\PassportTest;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class LoginTest extends TestCase
 {
-    use DatabaseMigrations,SetPassportTest;
+    use DatabaseMigrations,PassportTest;
     public function setUp():void{
         parent::setUp();
         $this->setPassportTest();
@@ -19,6 +19,17 @@ class LoginTest extends TestCase
     public function loginPost($params){
         return $this->post('api/login',$params);
     }
+    public function loginData($type,$verified){
+        $loginParamters = [
+            ["email" => "a@b.com","password" => "123456"], // true data
+            ["email" => "a@b.com","password" => "12346"], // Wrong password
+            ["email" => "b@b.com","password" => "123456"], // Wrong email
+        ];
+        factory(User::class)->state($verified)->create(["email" =>"a@b.com","password" => bcrypt("123456")]);
+
+        $response = $this->loginPost($loginParamters[$type]);
+        return $response;
+    }
     public function invalidParametrs(){
         $response = $this->loginPost(["email" => "a@b.com","password" => "12345"]);
         $response->assertStatus(401);
@@ -26,29 +37,25 @@ class LoginTest extends TestCase
     /** @test */
     public function check_login_user_verified()
     {
-        factory(User::class)->state("verified")->create(["email" =>"a@b.com","password" => bcrypt("123456")]);
-        $response = $this->loginPost(["email" => "a@b.com","password" => "123456"]);
+        $response = $this->loginData(0,"verified");
         $response->assertStatus(200);
     }
     /** @test */
     public function check_login_user_unverified()
     {
-        factory(User::class)->state("unverified")->create(["email" =>"a@b.com","password" => bcrypt("123456")]);
-        $response = $this->loginPost(["email" => "a@b.com","password" => "123456"]);
+        $response = $this->loginData(0,"unverified");
         $response->assertStatus(403);
     }
     /** @test */
     public function check_login_invalid_email()
     {
-        factory(User::class)->state("verified")->create(["email" =>"a@b.com","password" => bcrypt("123456")]);
-        $response = $this->loginPost(["email" => "b@b.com","password" => "123456"]);
+        $response = $this->loginData(2,"verified");
         $response->assertStatus(401);
     }
     /** @test */
     public function check_login_invalid_password()
     {
-        factory(User::class)->state("verified")->create(["email" =>"a@b.com","password" => bcrypt("123456")]);
-        $response = $this->loginPost(["email" => "a@b.com","password" => "12345"]);
+        $response = $this->loginData(1,"verified");
         $response->assertStatus(401);
     }
     /** @test */

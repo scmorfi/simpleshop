@@ -6,12 +6,12 @@ namespace Tests\Feature;
 use App\Job;
 use App\User;
 use Tests\TestCase;
-use App\SetPassportTest;
+use App\PassportTest;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class RegisterTest extends TestCase
 {
-    use DatabaseMigrations,SetPassportTest;
+    use DatabaseMigrations,PassportTest;
     public function setUp():void{
         parent::setUp();
         $this->setPassportTest();

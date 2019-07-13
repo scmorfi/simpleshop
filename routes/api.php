@@ -16,5 +16,5 @@ use Illuminate\Http\Request;
 Route::post('login', 'Api\Auth\LoginController@login');
 Route::post('register', 'Api\Auth\RegisterController@store');
 Route::group(['middleware' => 'auth:api'], function(){
-// Route::post('details', 'Api\UserController@details');
+    Route::post('charge', 'Api\ChargeController@store');
 });
