@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 yyy
 =======
-123
+12
 >>>>>>> 96926071611a69bfca68eb9f3308223f81a61c1a
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
